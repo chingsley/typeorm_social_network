@@ -18,6 +18,17 @@ export const Bootstrap = async () => {
   const tweet = new Tweet();
   tweet.title = "I finaaly got a new job!";
   tweet.content = "Sed ut perspiciatis unde omnis iste natus error.";
-  tweet.user = user;
+  tweet.user = Promise.resolve(user);
   await tweetRepo.save(tweet).catch((err) => console.log(err));
+};
+
+export const find = async () => {
+  const userRepo = getRepository(User);
+  const user = await userRepo
+    .findOne({ where: { firstName: "Alex" } })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  if (user) console.log("User: ", user, await user.tweets);
 };
